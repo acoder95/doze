@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="fa" dir="rtl" translate="no">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="google" content="notranslate">
+<meta name="robots" content="notranslate">
 <title>دوز</title>
 <script>(function(){var c=['https://unpkg.com/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js','https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js','https://cdn.skypack.dev/@supabase/supabase-js@2'],i=0;function L(){if(i>=c.length)return;var s=document.createElement('script');s.src=c[i++];s.onerror=L;s.onload=function(){if(window.supabase&&window.supabase.createClient)window.dispatchEvent(new Event('sb-ready'));else L()};document.head.appendChild(s)}L()})();</script>
 <style>
@@ -74,8 +76,6 @@ button:disabled{background:#5a5f75;cursor:not-allowed}
 #modal .row{display:flex;gap:10px;justify-content:space-between}
 #modal .row button{flex:1;padding:11px 8px;font-size:14px;border-radius:8px}
 #modal-continue{background:#2e7d6f}#modal-exit{background:#b5453a}
-
-/* ─── تمام صفحه پایان بازی ─── */
 #end-screen{display:none;position:fixed;inset:0;background:rgba(30,20,10,.72);z-index:500;align-items:center;justify-content:center;padding:20px}
 #end-screen.show{display:flex}
 #end-box{background:#fffaf0;border:3px solid #8b6f47;border-radius:16px;padding:32px 24px;max-width:360px;width:100%;text-align:center;box-shadow:0 12px 40px rgba(0,0,0,.4)}
@@ -267,12 +267,10 @@ async function saveUsername(){
   if(remain>0) lockInput(remain);
 }
 
-// ─── مخفی/نمایان کردن تب‌ها ───
 function setTabsVisible(v){
   $('tabs').classList.toggle('hidden',!v);
 }
 
-// ─── صفحه پایان بازی ───
 function showEndScreen(winner,mySym){
   if(endShown) return;
   endShown=true;
@@ -313,7 +311,6 @@ function bindUI(){
   $('send-btn').addEventListener('click',sendChat);
   $('chat-input').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();sendChat();}});
 
-  // خروج از بازی
   $('game-exit').addEventListener('click',()=>{
     if(gstate&&gstate.status==='playing'&&!gstate.winner){
       $('modal-bg').classList.add('show');
@@ -328,14 +325,12 @@ function bindUI(){
     cancelSearch();
   });
 
-  // دکمه پایان بازی
   $('end-menu-btn').addEventListener('click',()=>{
     hideEndScreen();
     if(gid){cancelSearch();}
     else{offReset();}
   });
 
-  // بازی آفلاین
   document.querySelectorAll('#off-size .line').forEach(l=>l.addEventListener('click',()=>{
     off.size=parseInt(l.dataset.size);
     $('off-size').style.display='none';$('off-game').style.display='block';
@@ -348,7 +343,6 @@ function bindUI(){
     setTabsVisible(true);
   });
 
-  // ارتباط با من
   $('rubika-btn').addEventListener('click',()=>{
     window.open('https://rubika.ir/a_code_r','_blank');
   });
@@ -461,10 +455,7 @@ function renderGame(g){
   }
   const gs=$('game-status'),ti=$('turn-indicator');
   if(g.winner){
-    gs.className='';
-    if(g.winner==='draw'){gs.textContent='';gs.classList.add('draw');}
-    else if(g.winner===my){gs.textContent='';gs.classList.add('win');}
-    else{gs.textContent='';gs.classList.add('lose');}
+    gs.className='';gs.textContent='';
     ti.textContent='';
     $('game-exit').style.display='none';
     showEndScreen(g.winner,my);
@@ -527,7 +518,6 @@ async function sendChat(){
   await sb.rpc('send_message',{p_game_id:gid,p_text:t});
 }
 
-// ─── آفلاین ───
 const off={board:[],size:0,turn:'X',winner:null,active:false};
 
 function startOffline(){
@@ -565,12 +555,8 @@ function doOffMove(i,sym){
   const w=checkLine(off.board,off.size,sym)?sym:(off.board.every(x=>x)?'draw':null);
   if(w){
     off.winner=w;off.active=false;
-    const os=$('off-status');os.className='';
-    if(w==='draw'){os.textContent='';os.classList.add('draw');}
-    else if(w==='X'){os.textContent='';os.classList.add('win');}
-    else{os.textContent='';os.classList.add('lose');}
+    const os=$('off-status');os.className='';os.textContent='';
     $('off-turn').textContent='';
-    // نمایش صفحه پایان با تأخیر کوتاه
     setTimeout(()=>showEndScreen(w,'X'),200);
   }
 }
@@ -602,4 +588,4 @@ function botMove(b,n,me,opp){
 }
 </script>
 </body>
-</html>
+                                                                                              </html>
